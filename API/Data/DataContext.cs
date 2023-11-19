@@ -11,5 +11,5 @@ public sealed class DataContext :DbContext
         
     }
 
-    public DbSet<AppUser> User { get; set; }
+    public DbSet<AppUser> Users => Set<AppUser>();
 }
