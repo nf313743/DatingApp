@@ -1,2 +1,2 @@
 namespace API.DTOs;
-public sealed record UserDto(string UserName, string Token);
+public sealed record UserDto(string UserName, string Token, string? PhotoUrl);
