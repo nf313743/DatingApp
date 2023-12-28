@@ -4,6 +4,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,11 +14,13 @@ public sealed class AccountController : BaseApiController
 {
     private readonly DataContext _context;
     private readonly ITokenService _tokenService;
+    private readonly IMapper _mapper;
 
-    public AccountController(DataContext context, ITokenService tokenService)
+    public AccountController(DataContext context, ITokenService tokenService, IMapper mapper)
     {
         _context = context;
         _tokenService = tokenService;
+        _mapper = mapper;
     }
 
     [HttpPost("register")]
@@ -26,26 +29,27 @@ public sealed class AccountController : BaseApiController
         if (await UserExists((dto.UserName)))
             return BadRequest("User Name is taken");
 
+        var user = _mapper.Map<AppUser>(dto);
+
         using var hmac = new HMACSHA512();
-        var user = new AppUser()
-        {
-            UserName = dto.UserName,
-            PasswordHash = hmac.ComputeHash((Encoding.UTF8.GetBytes(dto.Password))),
-            PasswordSalt = hmac.Key
-        };
+
+        user.UserName = dto.UserName;
+        user.PasswordHash = hmac.ComputeHash((Encoding.UTF8.GetBytes(dto.Password)));
+        user.PasswordSalt = hmac.Key;
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
         return new UserDto(
             user.UserName,
             _tokenService.CreateToken(user),
-            null);
+            null,
+            user.KnownAs);
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto dto)
     {
-        var user = await _context.Users.Include(x=> x.Photos).SingleOrDefaultAsync(x => x.UserName == dto.UserName);
+        var user = await _context.Users.Include(x => x.Photos).SingleOrDefaultAsync(x => x.UserName == dto.UserName);
 
         if (user is null) return Unauthorized();
 
@@ -60,7 +64,8 @@ public sealed class AccountController : BaseApiController
         return new UserDto(
             user.UserName,
             _tokenService.CreateToken(user),
-            user.Photos.FirstOrDefault(x => x.IsMain)?.Url);
+            user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+            user.KnownAs);
     }
 
     private Task<bool> UserExists(string userName)

@@ -1,2 +1,10 @@
 {
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "DatingApp",
+            "database": "${workspaceFolder:DatingApp}/API/datingapp.db"
+        }
+    ]
 }

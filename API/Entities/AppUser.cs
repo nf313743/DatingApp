@@ -23,11 +23,11 @@ public sealed class AppUser
 
     public string Gender { get; set; } = default!;
 
-    public string Introduction { get; set; } = default!;
+    public string? Introduction { get; set; }
 
-    public string LookingFor { get; set; } = default!;
+    public string? LookingFor { get; set; }
 
-    public string Interests { get; set; } = default!;
+    public string? Interests { get; set; }
 
     public string City { get; set; } = default!;
 
