@@ -43,7 +43,8 @@ public sealed class AccountController : BaseApiController
             user.UserName,
             _tokenService.CreateToken(user),
             null,
-            user.KnownAs);
+            user.KnownAs,
+            user.Gender);
     }
 
     [HttpPost("login")]
@@ -65,7 +66,8 @@ public sealed class AccountController : BaseApiController
             user.UserName,
             _tokenService.CreateToken(user),
             user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
-            user.KnownAs);
+            user.KnownAs,
+            user.Gender);
     }
 
     private Task<bool> UserExists(string userName)

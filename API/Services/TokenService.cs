@@ -7,21 +7,21 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace API.Services;
 
-public sealed class TokenService: ITokenService
+public sealed class TokenService : ITokenService
 {
-    
     private readonly SymmetricSecurityKey _key;
 
     public TokenService(IConfiguration config)
     {
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]!));
     }
-    
+
     public string CreateToken(AppUser user)
     {
         var claims = new List<Claim>()
         {
-            new(JwtRegisteredClaimNames.NameId, user.UserName),
+            new(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.UniqueName, user.UserName),
         };
 
         var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

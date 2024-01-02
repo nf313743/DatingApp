@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-
 public class BuggyController : BaseApiController
 {
     private readonly DataContext _context;
@@ -21,7 +20,7 @@ public class BuggyController : BaseApiController
     {
         return "secret text";
     }
- 
+
     [HttpGet("not-found")]
     public ActionResult<AppUser> GetNotFound()
     {
@@ -31,25 +30,19 @@ public class BuggyController : BaseApiController
             return NotFound();
 
         throw new InvalidOperationException("There can be no user with this Id");
-
     }
-    
-    
+
     [HttpGet("server-error")]
     public ActionResult<string> GetServerError()
     {
         var thing = _context.Users.Find(-1)!;
 
         return thing.ToString()!;
-
     }
-    
+
     [HttpGet("bad-request")]
     public ActionResult<string> GetBadRequest()
     {
         return BadRequest("This is not a good request");
-
     }
-
-    
 }
