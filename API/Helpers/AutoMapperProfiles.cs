@@ -15,5 +15,8 @@ public sealed class AutoMapperProfiles : Profile
         CreateMap<Photo, PhotoDto>();
         CreateMap<MemberUpdateDto, AppUser>();
         CreateMap<RegisterDto, AppUser>();
+        CreateMap<Message, MessageDto>()
+            .ForMember(x => x.SenderPhotoUrl, x => x.MapFrom(s => s.Sender.Photos.First(a => a.IsMain).Url))
+            .ForMember(x => x.RecipientPhotoUrl, x => x.MapFrom(s => s.Recipient.Photos.First(a => a.IsMain).Url));
     }
 }

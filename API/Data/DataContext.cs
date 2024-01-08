@@ -14,6 +14,8 @@ public sealed class DataContext : DbContext
 
     public DbSet<UserLike> Likes => Set<UserLike>();
 
+    public DbSet<Message> Messages => Set<Message>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -32,5 +34,17 @@ public sealed class DataContext : DbContext
             .WithMany(x => x.LikedByUsers)
             .HasForeignKey(x => x.TargetUserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Message>()
+            .HasOne(x => x.Recipient)
+            .WithMany(x => x.MessagesReceived)
+            .HasForeignKey(x => x.RecipientId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Message>()
+            .HasOne(x => x.Sender)
+            .WithMany(x => x.MessagesSent)
+            .HasForeignKey(x => x.SenderId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
