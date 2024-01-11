@@ -39,8 +39,8 @@ public sealed class MessagesController : BaseApiController
         {
             Sender = sender,
             Recipient = recipient,
-            SenderUserName = sender.UserName,
-            RecipientUserName = recipient.UserName,
+            SenderUserName = sender.UserName!,
+            RecipientUserName = recipient.UserName!,
             Content = createMessageDto.Content
         };
 

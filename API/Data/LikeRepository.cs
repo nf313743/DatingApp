@@ -45,7 +45,7 @@ public sealed class LikeRepository : ILikesRepository
             Id = x.Id,
             KnownAs = x.KnownAs,
             PhotoUrl = x.Photos.First(x => x.IsMain).Url,
-            UserName = x.UserName
+            UserName = x.UserName!
         });
 
         return await PagedList<LikeDto>.Create(likedUsers, likesParams.PageNumber, likesParams.PageSize);

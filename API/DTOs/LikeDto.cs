@@ -8,9 +8,9 @@ public sealed class LikeDto
 
     public int Age { get; set; }
 
-    public string KnownAs { get; set; } = default!;
+    public string? KnownAs { get; set; }
 
     public string PhotoUrl { get; set; } = default!;
 
-    public string City { get; set; } = default!;
+    public string? City { get; set; }
 }
