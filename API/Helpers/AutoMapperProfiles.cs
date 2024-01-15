@@ -18,5 +18,10 @@ public sealed class AutoMapperProfiles : Profile
         CreateMap<Message, MessageDto>()
             .ForMember(x => x.SenderPhotoUrl, x => x.MapFrom(s => s.Sender.Photos.First(a => a.IsMain).Url))
             .ForMember(x => x.RecipientPhotoUrl, x => x.MapFrom(s => s.Recipient.Photos.First(a => a.IsMain).Url));
+        CreateMap<DateTime, DateTime>().ConvertUsing(x => DateTime.SpecifyKind(x, DateTimeKind.Utc));
+        CreateMap<DateTime?, DateTime?>().ConvertUsing(x => 
+            x.HasValue 
+                ?  DateTime.SpecifyKind(x.Value, DateTimeKind.Utc) 
+                : null);
     }
 }

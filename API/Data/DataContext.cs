@@ -24,6 +24,10 @@ public sealed class DataContext : IdentityDbContext<
 
     public DbSet<Message> Messages => Set<Message>();
 
+    public DbSet<Group> Groups => Set<Group>();
+
+    public DbSet<Connection> Connections => Set<Connection>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
