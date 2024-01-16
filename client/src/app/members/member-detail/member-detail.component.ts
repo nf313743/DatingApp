@@ -74,13 +74,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadMessages() {
-    if (this.member) {
-      this.messageService
-        .getMessageThread(this.member.userName)
-        .subscribe((x) => (this.messages = x));
-    }
-  }
+
 
   getImages() {
     if (!this.member) return;

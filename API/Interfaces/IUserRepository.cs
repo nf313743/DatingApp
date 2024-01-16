@@ -8,8 +8,6 @@ public interface IUserRepository
 {
     void Update(AppUser user);
 
-    Task<bool> SaveAll();
-
     Task<IEnumerable<AppUser>> GetUsers();
 
     ValueTask<AppUser?> GetUserById(int id);
@@ -19,4 +17,6 @@ public interface IUserRepository
     Task<PagedList<MemberDto>> GetMembers(UserParams userParams);
 
     Task<MemberDto?> GetMemberByUserName(string username);
+
+    Task<string> GetUserGender(string userName);
 }

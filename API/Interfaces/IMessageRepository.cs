@@ -16,8 +16,6 @@ public interface IMessageRepository
 
     Task<IEnumerable<MessageDto>> GetMessageThread(string currentUseName, string recipientUserName);
 
-    Task<bool> SaveAll();
-
     void AddGroup(Group group);
 
     void RemoveConnection(Connection connection);
